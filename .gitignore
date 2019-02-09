@@ -1,0 +1,16 @@
+# Package Files
+*.jar
+*.war
+
+# Gradle
+.gradle
+
+# IntelliJ
+out/
+.idea
+
+# Ignore Gradle GUI config
+gradle/wrapper/gradle-wrapper.properties
+
+
+
