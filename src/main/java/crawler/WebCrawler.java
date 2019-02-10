@@ -9,44 +9,49 @@ import org.slf4j.LoggerFactory;
 import robotstxt.RobotsPermissionsController;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 public class WebCrawler {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebCrawler.class);
 
     private RobotsPermissionsController robotsPermissionsController;
-
-    private HashSet<String> links = new HashSet<>();
     private String domain;
+    private Queue queue = new Queue();
 
-    public WebCrawler(RobotsPermissionsController robotsPermissionsController, String domain) {
+    public WebCrawler(RobotsPermissionsController robotsPermissionsController, String url) {
         this.robotsPermissionsController = robotsPermissionsController;
-        this.domain = domain;
+        this.domain = url.replaceFirst("http://", "");
+        this.queue.add(url);
+    }
+
+    public Queue getQueue() {
+        return queue;
     }
 
     public void getPageLinks(String url) {
-        if (!links.contains(url)) {
-            try {
-                if (links.add(url)) {
-                    LOG.info(url);
+        if (belongsToDomain(domain, url) && robotsPermissionsController.isAllowed(domain, url)) {
+            Elements linksOnPage = findLinks(url);
+            for (Element page : linksOnPage) {
+                String link = page.attr("abs:href");
+                if (!link.isEmpty() && queue.add(link)) {
+                    LOG.info(link);
                 }
-                if (belongsToDomain(domain, url) && robotsPermissionsController.isAllowed(domain, url)) {
-
-                    Document document = Jsoup.connect(url).get();
-                    Elements linksOnPage = document.select("a[href]");
-                    Elements sourcesOnPage = document.select("[src]");
-                    linksOnPage.addAll(sourcesOnPage);
-
-                    for (Element page : linksOnPage) {
-                        String link = page.attr("abs:href");
-                        getPageLinks(link);
-                    }
-
-                }
-            } catch (IOException e) {
-                LOG.warn("For '{}': {}", url, e.getMessage());
             }
+        } else {
+            queue.markAsCrawled(url);
+        }
+    }
+
+    private Elements findLinks(String url) {
+        try {
+            Document document = Jsoup.connect(url).get();
+            Elements linksOnPage = document.select("a[href]");
+            Elements sourcesOnPage = document.select("[src]");
+            linksOnPage.addAll(sourcesOnPage);
+            return linksOnPage;
+        } catch (IOException e) {
+            LOG.warn("For '{}': {}", url, e.getMessage());
+            return new Elements(0);
         }
     }
 
