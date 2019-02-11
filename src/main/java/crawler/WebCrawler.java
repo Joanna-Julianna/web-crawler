@@ -27,20 +27,35 @@ public class WebCrawler {
         this.frontier.add(url);
     }
 
+    /**
+     * Get next site url from frontier.
+     */
     public Optional<String> getNext() {
         return frontier.getNext();
     }
 
+    /**
+     * Load page and find all links on page.
+     */
     public void getPageLinks(String url) {
-        if (belongsToDomain(domain, url) && robotsPermissionsController.isAllowed(domain, url)) {
-            Elements linksOnPage = findLinks(url);
-            linksOnPage.stream()
-                    .map(page -> page.attr("abs:href"))
-                    .filter(link -> !link.isEmpty())
-                    .forEach(link -> frontier.add(link));
+        Elements linksOnPage = findLinks(url);
+        linksOnPage.stream()
+                .map(page -> page.attr("abs:href"))
+                .filter(link -> !link.isEmpty())
+                .forEach(this::processLink);
+    }
+
+    private void processLink(String link) {
+        if (isAllowedToVisit(link)) {
+            frontier.add(link);
         } else {
-            frontier.markAsCrawled(url);
+            frontier.markAsCrawled(link);
         }
+    }
+
+    private boolean isAllowedToVisit(String url) {
+        return belongsToDomain(domain, url)
+                && robotsPermissionsController.isAllowed(domain, url);
     }
 
     private Elements findLinks(String url) {
@@ -72,4 +87,5 @@ public class WebCrawler {
     public void decrementThreads() {
         activeThreads.decrementAndGet();
     }
+
 }

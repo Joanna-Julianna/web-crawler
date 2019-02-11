@@ -15,7 +15,6 @@ public class Frontier {
     public boolean add(String site) {
         synchronized (this) {
             if (!crawledSites.contains(site) && !notVisitedSites.contains(site)) {
-                System.out.println(site);
                 return notVisitedSites.add(site);
             }
         }
@@ -41,11 +40,13 @@ public class Frontier {
     /**
      * Mark site as crawled if external site or link to static content.
      */
-    public void markAsCrawled(String site) {
+    public boolean markAsCrawled(String site) {
         synchronized (this) {
-            crawledSites.add(site);
-            notVisitedSites.remove(site);
+            if (!crawledSites.contains(site)) {
+                return crawledSites.add(site);
+            }
         }
+        return false;
     }
 
 }
