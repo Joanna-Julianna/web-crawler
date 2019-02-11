@@ -34,7 +34,9 @@ public class CrawlerController {
         RobotsTxtParser robotsTxtParser = new RobotsTxtParser();
         Set<String> disallowedPages = robotsTxtParser.findDisallowedPages(url);
         RobotsPermissionsController robotsPermissionsController = new RobotsPermissionsController(disallowedPages);
+        String domain = url.replaceFirst("http://", "");
+        PermissionController permissionController = new PermissionController(domain, robotsPermissionsController);
 
-        return new WebCrawler(robotsPermissionsController, new Frontier(), url);
+        return new WebCrawler(permissionController, new Frontier(url));
     }
 }

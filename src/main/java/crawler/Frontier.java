@@ -9,6 +9,10 @@ public class Frontier {
     private List<String> crawledSites = new ArrayList<>();
     private List<String> notVisitedSites = new ArrayList<>();
 
+    public Frontier(String site) {
+        this.notVisitedSites.add(site);
+    }
+
     /**
      * Add unvisited site.
      */
@@ -23,7 +27,6 @@ public class Frontier {
 
     /**
      * Get getNext site to crawl.
-     * Can return null (if nothing to crawl)
      */
     public Optional<String> getNext() {
         synchronized (this) {

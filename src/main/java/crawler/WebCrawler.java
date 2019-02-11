@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import robotstxt.RobotsPermissionsController;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -15,16 +14,13 @@ public class WebCrawler {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebCrawler.class);
 
-    private RobotsPermissionsController robotsPermissionsController;
-    private String domain;
+    private PermissionController permissionController;
     private Frontier frontier;
     private AtomicInteger activeThreads = new AtomicInteger(0);
 
-    public WebCrawler(RobotsPermissionsController robotsPermissionsController, Frontier frontier, String url) {
-        this.robotsPermissionsController = robotsPermissionsController;
-        this.domain = url.replaceFirst("http://", "");
+    public WebCrawler(PermissionController permissionController, Frontier frontier) {
+        this.permissionController = permissionController;
         this.frontier = frontier;
-        this.frontier.add(url);
     }
 
     /**
@@ -46,16 +42,11 @@ public class WebCrawler {
     }
 
     private void processLink(String link) {
-        if (isAllowedToVisit(link)) {
+        if (permissionController.isAllowedToVisit(link)) {
             frontier.add(link);
         } else {
             frontier.markAsCrawled(link);
         }
-    }
-
-    private boolean isAllowedToVisit(String url) {
-        return belongsToDomain(domain, url)
-                && robotsPermissionsController.isAllowed(domain, url);
     }
 
     private Elements findLinks(String url) {
@@ -69,11 +60,6 @@ public class WebCrawler {
             LOG.warn("For '{}': {}", url, e.getMessage());
             return new Elements(0);
         }
-    }
-
-    private boolean belongsToDomain(String domain, String link) {
-        return link.startsWith("https://" + domain) ||
-                link.startsWith("http://" + domain);
     }
 
     public boolean isAnyActiveThread() {
