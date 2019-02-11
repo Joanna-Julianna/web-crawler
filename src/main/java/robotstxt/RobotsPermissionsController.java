@@ -16,11 +16,7 @@ public class RobotsPermissionsController {
     public boolean isAllowed(String domain, String url) {
         String page = url.replaceFirst("http://", "")
                 .replaceFirst("https://", "");
-        for (String disallowedPage : disallowedPages) {
-            if (page.startsWith(domain + disallowedPage)) {
-                return false;
-            }
-        }
-        return true;
+        return disallowedPages.stream()
+                .noneMatch(disallowedPage -> page.startsWith(domain + disallowedPage));
     }
 }

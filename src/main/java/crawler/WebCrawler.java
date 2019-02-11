@@ -2,13 +2,14 @@ package crawler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import robotstxt.RobotsPermissionsController;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WebCrawler {
 
@@ -16,29 +17,29 @@ public class WebCrawler {
 
     private RobotsPermissionsController robotsPermissionsController;
     private String domain;
-    private Queue queue = new Queue();
+    private Frontier frontier;
+    private AtomicInteger activeThreads = new AtomicInteger(0);
 
-    public WebCrawler(RobotsPermissionsController robotsPermissionsController, String url) {
+    public WebCrawler(RobotsPermissionsController robotsPermissionsController, Frontier frontier, String url) {
         this.robotsPermissionsController = robotsPermissionsController;
         this.domain = url.replaceFirst("http://", "");
-        this.queue.add(url);
+        this.frontier = frontier;
+        this.frontier.add(url);
     }
 
-    public Queue getQueue() {
-        return queue;
+    public Optional<String> getNext() {
+        return frontier.getNext();
     }
 
     public void getPageLinks(String url) {
         if (belongsToDomain(domain, url) && robotsPermissionsController.isAllowed(domain, url)) {
             Elements linksOnPage = findLinks(url);
-            for (Element page : linksOnPage) {
-                String link = page.attr("abs:href");
-                if (!link.isEmpty() && queue.add(link)) {
-                    LOG.info(link);
-                }
-            }
+            linksOnPage.stream()
+                    .map(page -> page.attr("abs:href"))
+                    .filter(link -> !link.isEmpty())
+                    .forEach(link -> frontier.add(link));
         } else {
-            queue.markAsCrawled(url);
+            frontier.markAsCrawled(url);
         }
     }
 
@@ -58,5 +59,17 @@ public class WebCrawler {
     private boolean belongsToDomain(String domain, String link) {
         return link.startsWith("https://" + domain) ||
                 link.startsWith("http://" + domain);
+    }
+
+    public boolean isAnyActiveThread() {
+        return activeThreads.get() > 0;
+    }
+
+    public void incrementThreads() {
+        activeThreads.incrementAndGet();
+    }
+
+    public void decrementThreads() {
+        activeThreads.decrementAndGet();
     }
 }

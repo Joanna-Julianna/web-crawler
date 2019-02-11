@@ -4,7 +4,7 @@ public class WebCrawlerRunnable implements Runnable {
 
     private WebCrawler webCrawler;
 
-    private String url;
+    private final String url;
 
     public WebCrawlerRunnable(WebCrawler webCrawler, String url) {
         this.webCrawler = webCrawler;
@@ -14,5 +14,6 @@ public class WebCrawlerRunnable implements Runnable {
     @Override
     public void run() {
         webCrawler.getPageLinks(url);
+        webCrawler.decrementThreads();
     }
 }

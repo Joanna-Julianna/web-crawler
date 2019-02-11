@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Queue {
+public class Frontier {
 
     private List<String> crawledSites = new ArrayList<>();
     private List<String> notVisitedSites = new ArrayList<>();
@@ -15,10 +15,11 @@ public class Queue {
     public boolean add(String site) {
         synchronized (this) {
             if (!crawledSites.contains(site) && !notVisitedSites.contains(site)) {
+                System.out.println(site);
                 return notVisitedSites.add(site);
             }
-            return false;
         }
+        return false;
     }
 
     /**
@@ -33,8 +34,8 @@ public class Queue {
                 crawledSites.add(site);
                 return Optional.of(site);
             }
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     /**
@@ -46,4 +47,5 @@ public class Queue {
             notVisitedSites.remove(site);
         }
     }
+
 }
