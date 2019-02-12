@@ -1,13 +1,11 @@
 package crawler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Frontier {
 
-    private List<String> crawledSites = new ArrayList<>();
-    private List<String> notVisitedSites = new ArrayList<>();
+    private Set<String> crawledSites = new HashSet<>();
+    private Queue<String> notVisitedSites = new LinkedList<>();
 
     public Frontier(String site) {
         this.notVisitedSites.add(site);
@@ -31,8 +29,7 @@ public class Frontier {
     public Optional<String> getNext() {
         synchronized (this) {
             if (!notVisitedSites.isEmpty()) {
-                String site = notVisitedSites.get(0);
-                notVisitedSites.remove(0);
+                String site = notVisitedSites.poll();
                 crawledSites.add(site);
                 return Optional.of(site);
             }

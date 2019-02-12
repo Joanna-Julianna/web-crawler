@@ -1,7 +1,5 @@
 package crawler;
 
-import org.jsoup.select.Elements;
-
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,11 +27,8 @@ public class WebCrawler {
      * Load page and find all links on page.
      */
     public void getPageLinks(String url) {
-        Elements linksOnPage = siteLoader.findLinks(url);
-        linksOnPage.stream()
-                .map(page -> page.attr("abs:href"))
-                .filter(link -> !link.isEmpty())
-                .forEach(this::processLink);
+        siteLoader.getPageLinks(url).forEach(this::processLink);
+        activeThreads.decrementAndGet();
     }
 
     private void processLink(String link) {
@@ -50,10 +45,6 @@ public class WebCrawler {
 
     public void incrementThreads() {
         activeThreads.incrementAndGet();
-    }
-
-    public void decrementThreads() {
-        activeThreads.decrementAndGet();
     }
 
 }

@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SiteLoader {
 
@@ -15,7 +17,15 @@ public class SiteLoader {
     /**
      * Find all inks on site
      */
-    public Elements findLinks(String url) {
+    public Set<String> getPageLinks(String url) {
+        Elements linksOnPage = findLinks(url);
+        return linksOnPage.stream()
+                .map(page -> page.attr("abs:href"))
+                .filter(link -> !link.isEmpty())
+                .collect(Collectors.toSet());
+    }
+
+    private Elements findLinks(String url) {
         try {
             Document document = Jsoup.connect(url).get();
             Elements linksOnPage = document.select("a[href]");

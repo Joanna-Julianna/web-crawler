@@ -22,16 +22,17 @@ public class CrawlerController {
      */
     public void execute(String url) {
         WebCrawler webCrawler = initWebCrawler(url);
-        webCrawler.getPageLinks(url);
-        Optional<String> next = webCrawler.getNext();
+        Optional<String> next = Optional.of(url);
 
         int nThreads = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(nThreads);
         while (next.isPresent() || webCrawler.isAnyActiveThread()) {
             if (next.isPresent()) {
-                Runnable worker = new WebCrawlerRunnable(webCrawler, next.get());
+                String link = next.get();
                 webCrawler.incrementThreads();
-                executor.execute(worker);
+                executor.execute(() ->
+                        webCrawler.getPageLinks(link)
+                );
             }
             next = webCrawler.getNext();
         }
