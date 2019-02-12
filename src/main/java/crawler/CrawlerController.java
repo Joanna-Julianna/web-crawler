@@ -1,5 +1,7 @@
 package crawler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import robotstxt.RobotsPermissionsController;
 import robotstxt.RobotsTxtParser;
 
@@ -11,7 +13,14 @@ import java.util.concurrent.TimeUnit;
 
 public class CrawlerController {
 
-    public void execute(String url) throws InterruptedException {
+    private static final Logger LOG = LoggerFactory.getLogger(CrawlerController.class);
+
+    /**
+     * Execute crawler in threads
+     *
+     * @param url first page to visit
+     */
+    public void execute(String url) {
         WebCrawler webCrawler = initWebCrawler(url);
         webCrawler.getPageLinks(url);
         Optional<String> next = webCrawler.getNext();
@@ -27,7 +36,11 @@ public class CrawlerController {
             next = webCrawler.getNext();
         }
         executor.shutdown();
-        executor.awaitTermination(1, TimeUnit.MINUTES);
+        try {
+            executor.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            LOG.error("Error executor termination: {}" + e.getMessage());
+        }
     }
 
     private WebCrawler initWebCrawler(String url) {
@@ -37,6 +50,6 @@ public class CrawlerController {
         String domain = url.replaceFirst("http://", "");
         PermissionController permissionController = new PermissionController(domain, robotsPermissionsController);
 
-        return new WebCrawler(permissionController, new Frontier(url));
+        return new WebCrawler(permissionController, new Frontier(url), new SiteLoader());
     }
 }

@@ -1,26 +1,21 @@
 package crawler;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WebCrawler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WebCrawler.class);
-
     private PermissionController permissionController;
     private Frontier frontier;
+    private SiteLoader siteLoader;
     private AtomicInteger activeThreads = new AtomicInteger(0);
 
-    public WebCrawler(PermissionController permissionController, Frontier frontier) {
+    public WebCrawler(PermissionController permissionController, Frontier frontier, SiteLoader siteLoader) {
         this.permissionController = permissionController;
         this.frontier = frontier;
+        this.siteLoader = siteLoader;
     }
 
     /**
@@ -34,7 +29,7 @@ public class WebCrawler {
      * Load page and find all links on page.
      */
     public void getPageLinks(String url) {
-        Elements linksOnPage = findLinks(url);
+        Elements linksOnPage = siteLoader.findLinks(url);
         linksOnPage.stream()
                 .map(page -> page.attr("abs:href"))
                 .filter(link -> !link.isEmpty())
@@ -46,19 +41,6 @@ public class WebCrawler {
             frontier.add(link);
         } else {
             frontier.markAsCrawled(link);
-        }
-    }
-
-    private Elements findLinks(String url) {
-        try {
-            Document document = Jsoup.connect(url).get();
-            Elements linksOnPage = document.select("a[href]");
-            Elements sourcesOnPage = document.select("[src]");
-            linksOnPage.addAll(sourcesOnPage);
-            return linksOnPage;
-        } catch (IOException e) {
-            LOG.warn("For '{}': {}", url, e.getMessage());
-            return new Elements(0);
         }
     }
 
