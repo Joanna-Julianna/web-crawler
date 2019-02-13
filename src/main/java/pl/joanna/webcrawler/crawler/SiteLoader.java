@@ -1,21 +1,23 @@
-package crawler;
+package pl.joanna.webcrawler.crawler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Controller
 public class SiteLoader {
 
     private static final Logger LOG = LoggerFactory.getLogger(SiteLoader.class);
 
     /**
-     * Find all inks on site
+     * Find all links on site
      */
     public Set<String> getPageLinks(String url) {
         Elements linksOnPage = findLinks(url);

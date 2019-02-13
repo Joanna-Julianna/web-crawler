@@ -4,7 +4,7 @@ Web Crawler Project
 Prerequisites
 -------------
 - JDK 8
-- Gradle use `gradlew` wrapper
+- Gradle
 
 
 Building with Gradle
@@ -23,10 +23,14 @@ https://wiprodigital.com/who-we-are
 https://wiprodigital.com/who-we-are/#masthead
 https://wiprodigital.com/who-we-are/#wdteam-vid
 
-3. Take disallowed sites from robots.txt only for 'User-agent: *'
+3. Remove duplicate if the same page with protocol http and https
 
-4. Create sitemap
+4. Take disallowed sites from robots.txt only for 'User-agent: *'
 
-5. Add priority for sites
+5. Create sitemap
 
-6. Think about better algorithm
+6. Add priority for sites
+
+7. Add first link to crawled
+
+8. Add test for WebCrawler

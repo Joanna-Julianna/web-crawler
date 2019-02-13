@@ -1,5 +1,6 @@
-package robotstxt
+package pl.joanna.webcrawler.robotstxt
 
+import pl.joanna.webcrawler.permissions.PermissionModel
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -8,11 +9,13 @@ class RobotsPermissionsControllerTest extends Specification {
 
     def "check if #page is allowed"() {
         given:
+        def domain = "wiprodigital.com"
         def disallowedPages = Set.of("/wp-admin/", "/wp-test/")
-        def controller = new RobotsPermissionsController(disallowedPages)
+        PermissionModel permissionModel = new PermissionModel(domain, disallowedPages)
+        RobotsPermissionsController controller = new RobotsPermissionsController()
 
         when:
-        def result = controller.isAllowed("wiprodigital.com", page)
+        def result = controller.isAllowed(permissionModel, page)
 
         then:
         result == allowed

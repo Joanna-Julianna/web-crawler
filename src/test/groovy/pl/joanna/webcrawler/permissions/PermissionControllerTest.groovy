@@ -1,23 +1,26 @@
-package crawler
+package pl.joanna.webcrawler.permissions
 
-import robotstxt.RobotsPermissionsController
+import pl.joanna.webcrawler.robotstxt.RobotsPermissionsController
+import pl.joanna.webcrawler.robotstxt.RobotsTxtParser
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class PermissionControllerTest extends Specification {
 
     private RobotsPermissionsController robotsPermissionsController = Mock()
+    private RobotsTxtParser robotsTxtParser = Mock()
     private PermissionController permissionController
 
     @Unroll
     def "Check if is allowed to visit page #page"() {
         given:
         def domain = "wiprodigital.com"
-        robotsPermissionsController.isAllowed(domain, page) >> allowedToRobots
-        permissionController = new PermissionController(domain, robotsPermissionsController)
+        PermissionModel permissionModel = new PermissionModel(domain, new HashSet<String>())
+        robotsPermissionsController.isAllowed(permissionModel, page) >> allowedToRobots
+        permissionController = new PermissionController(robotsPermissionsController, robotsTxtParser)
 
         when:
-        boolean result = permissionController.isAllowedToVisit(page)
+        boolean result = permissionController.isAllowedToVisit(permissionModel, page)
 
         then:
         result == allowed

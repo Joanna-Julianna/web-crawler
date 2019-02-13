@@ -1,15 +1,14 @@
-package crawler;
+package pl.joanna.webcrawler.crawler;
+
+import org.springframework.stereotype.Controller;
 
 import java.util.*;
 
+@Controller
 public class Frontier {
 
     private Set<String> crawledSites = new HashSet<>();
     private Queue<String> notVisitedSites = new LinkedList<>();
-
-    public Frontier(String site) {
-        this.notVisitedSites.add(site);
-    }
 
     /**
      * Add unvisited site.

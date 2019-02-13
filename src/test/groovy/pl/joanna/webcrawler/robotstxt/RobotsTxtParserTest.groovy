@@ -1,4 +1,4 @@
-package robotstxt
+package pl.joanna.webcrawler.robotstxt
 
 import spock.lang.Specification
 import spock.lang.Unroll

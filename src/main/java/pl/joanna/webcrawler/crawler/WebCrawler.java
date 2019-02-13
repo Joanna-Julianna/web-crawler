@@ -1,15 +1,20 @@
-package crawler;
+package pl.joanna.webcrawler.crawler;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import pl.joanna.webcrawler.permissions.PermissionController;
+import pl.joanna.webcrawler.permissions.PermissionModel;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
+@Controller
 public class WebCrawler {
 
     private PermissionController permissionController;
     private Frontier frontier;
     private SiteLoader siteLoader;
-    private AtomicInteger activeThreads = new AtomicInteger(0);
 
+    @Autowired
     public WebCrawler(PermissionController permissionController, Frontier frontier, SiteLoader siteLoader) {
         this.permissionController = permissionController;
         this.frontier = frontier;
@@ -26,25 +31,16 @@ public class WebCrawler {
     /**
      * Load page and find all links on page.
      */
-    public void getPageLinks(String url) {
-        siteLoader.getPageLinks(url).forEach(this::processLink);
-        activeThreads.decrementAndGet();
+    public void getPageLinks(String url, PermissionModel permissionModel) {
+        siteLoader.getPageLinks(url).forEach(link -> processLink(permissionModel, link));
     }
 
-    private void processLink(String link) {
-        if (permissionController.isAllowedToVisit(link)) {
+    private void processLink(PermissionModel permissionModel, String link) {
+        if (permissionController.isAllowedToVisit(permissionModel, link)) {
             frontier.add(link);
         } else {
             frontier.markAsCrawled(link);
         }
-    }
-
-    public boolean isAnyActiveThread() {
-        return activeThreads.get() > 0;
-    }
-
-    public void incrementThreads() {
-        activeThreads.incrementAndGet();
     }
 
 }

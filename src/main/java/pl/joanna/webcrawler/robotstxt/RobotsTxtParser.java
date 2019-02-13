@@ -1,9 +1,10 @@
-package robotstxt;
+package pl.joanna.webcrawler.robotstxt;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Controller
 public class RobotsTxtParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(RobotsTxtParser.class);
