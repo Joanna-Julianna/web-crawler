@@ -10,14 +10,14 @@ class CrawlerControllerTest extends Specification {
     @Autowired
     private CrawlerController crawlerController
 
-    def "Execute"() {
+    def "find all sites"() {
         given:
         String url = "http://wiprodigital.com"
 
         when:
-        crawlerController.execute(url)
+        Set<String> sites = crawlerController.findAllSites(url)
 
         then:
-        1 == 1//todoasia
+        !sites.isEmpty()
     }
 }

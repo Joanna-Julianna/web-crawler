@@ -8,6 +8,7 @@ import pl.joanna.webcrawler.permissions.PermissionController;
 import pl.joanna.webcrawler.permissions.PermissionModel;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -28,11 +29,12 @@ public class CrawlerController {
     }
 
     /**
-     * Execute crawler in threads
+     * Execute crawler
      *
      * @param url first page to visit
+     * @return crawled sites
      */
-    public void execute(String url) {
+    public Set<String> findAllSites(String url) {
         PermissionModel permissionModel = permissionController.init(url);
         Optional<String> next = Optional.of(url);
         AtomicInteger activeThreads = new AtomicInteger(0);
@@ -42,10 +44,10 @@ public class CrawlerController {
         do {
             if (next.isPresent()) {
                 String link = next.get();
-                LOG.info(link);
+                //LOG.info(link);
                 activeThreads.incrementAndGet();
                 executor.execute(() -> {
-                            webCrawler.getPageLinks(link, permissionModel);
+                            webCrawler.findPageLinks(link, permissionModel);
                             activeThreads.decrementAndGet();
                         }
                 );
@@ -60,6 +62,8 @@ public class CrawlerController {
         } catch (InterruptedException e) {
             LOG.error("Error executor termination: {}" + e.getMessage());
         }
+
+        return webCrawler.getCrawledSites();
     }
 
     /**

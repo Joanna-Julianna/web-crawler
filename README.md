@@ -12,7 +12,11 @@ Building with Gradle
 Type:
 
     ./gradlew clean build
+    
+How to run
+-------------
 
+You can run crawler through integration test "execute crawler" in class CrawlerControllerTest
 
 TODO
 --------------------

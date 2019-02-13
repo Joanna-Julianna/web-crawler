@@ -19,7 +19,7 @@ public class SiteLoader {
     /**
      * Find all links on site
      */
-    public Set<String> getPageLinks(String url) {
+    public Set<String> findPageLinksOnWebsite(String url) {
         Elements linksOnPage = findLinks(url);
         return linksOnPage.stream()
                 .map(page -> page.attr("abs:href"))

@@ -6,6 +6,7 @@ import pl.joanna.webcrawler.permissions.PermissionController;
 import pl.joanna.webcrawler.permissions.PermissionModel;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class WebCrawler {
@@ -31,8 +32,9 @@ public class WebCrawler {
     /**
      * Load page and find all links on page.
      */
-    public void getPageLinks(String url, PermissionModel permissionModel) {
-        siteLoader.getPageLinks(url).forEach(link -> processLink(permissionModel, link));
+    public void findPageLinks(String url, PermissionModel permissionModel) {
+        siteLoader.findPageLinksOnWebsite(url)
+                .forEach(link -> processLink(permissionModel, link));
     }
 
     private void processLink(PermissionModel permissionModel, String link) {
@@ -41,6 +43,10 @@ public class WebCrawler {
         } else {
             frontier.markAsCrawled(link);
         }
+    }
+
+    public Set<String> getCrawledSites() {
+        return frontier.getCrawledSites();
     }
 
 }

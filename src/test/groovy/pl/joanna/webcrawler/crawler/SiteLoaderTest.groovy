@@ -7,12 +7,12 @@ class SiteLoaderTest extends Specification {
 
     private SiteLoader siteLoader = new SiteLoader()
 
-    def "get page links"() {
+    def "find page links on website"() {
         given:
         String url = "http://wiprodigital.com"
 
         when:
-        Set<String> links = siteLoader.getPageLinks(url)
+        Set<String> links = siteLoader.findPageLinksOnWebsite(url)
 
         then:
         !links.isEmpty()

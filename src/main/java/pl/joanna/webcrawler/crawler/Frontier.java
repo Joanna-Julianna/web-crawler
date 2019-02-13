@@ -48,4 +48,7 @@ public class Frontier {
         return false;
     }
 
+    public Set<String> getCrawledSites() {
+        return Collections.unmodifiableSet(crawledSites);
+    }
 }
