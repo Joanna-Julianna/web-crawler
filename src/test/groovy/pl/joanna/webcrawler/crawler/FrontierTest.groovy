@@ -1,9 +1,7 @@
 package pl.joanna.webcrawler.crawler
 
 import spock.lang.Specification
-import spock.lang.Unroll
 
-@Unroll
 class FrontierTest extends Specification {
 
     private Frontier frontier = new Frontier()

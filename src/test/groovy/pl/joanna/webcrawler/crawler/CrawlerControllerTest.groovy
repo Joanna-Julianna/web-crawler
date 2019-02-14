@@ -19,5 +19,6 @@ class CrawlerControllerTest extends Specification {
 
         then:
         !sites.isEmpty()
+        sites.each { site -> println "${site}" }
     }
 }
