@@ -1,10 +1,10 @@
 package pl.joanna.webcrawler.crawler;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Controller
+@Service
 public class Frontier {
 
     private Set<String> crawledSites = new HashSet<>();

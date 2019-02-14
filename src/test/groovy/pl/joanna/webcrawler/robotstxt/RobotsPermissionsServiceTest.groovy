@@ -5,17 +5,17 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class RobotsPermissionsControllerTest extends Specification {
+class RobotsPermissionsServiceTest extends Specification {
 
     def "check if #page is allowed"() {
         given:
         def domain = "wiprodigital.com"
         def disallowedPages = Set.of("/wp-admin/", "/wp-test/")
         PermissionModel permissionModel = new PermissionModel(domain, disallowedPages)
-        RobotsPermissionsController controller = new RobotsPermissionsController()
+        RobotsPermissionsService robotsPermissionsService = new RobotsPermissionsService()
 
         when:
-        def result = controller.isAllowed(permissionModel, page)
+        def result = robotsPermissionsService.isAllowed(permissionModel, page)
 
         then:
         result == allowed

@@ -1,21 +1,21 @@
 package pl.joanna.webcrawler.permissions;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import pl.joanna.webcrawler.robotstxt.RobotsPermissionsController;
+import org.springframework.stereotype.Service;
+import pl.joanna.webcrawler.robotstxt.RobotsPermissionsService;
 import pl.joanna.webcrawler.robotstxt.RobotsTxtParser;
 
 import java.util.Set;
 
-@Controller
-public class PermissionController {
+@Service
+public class PermissionService {
 
     private RobotsTxtParser robotsTxtParser;
-    private RobotsPermissionsController robotsPermissionsController;
+    private RobotsPermissionsService robotsPermissionsService;
 
     @Autowired
-    public PermissionController(RobotsPermissionsController robotsPermissionsController, RobotsTxtParser robotsTxtParser) {
-        this.robotsPermissionsController = robotsPermissionsController;
+    public PermissionService(RobotsPermissionsService robotsPermissionsService, RobotsTxtParser robotsTxtParser) {
+        this.robotsPermissionsService = robotsPermissionsService;
         this.robotsTxtParser = robotsTxtParser;
     }
 
@@ -33,7 +33,7 @@ public class PermissionController {
      */
     public boolean isAllowedToVisit(PermissionModel permissionModel, String url) {
         return belongsToDomain(permissionModel.getDomain(), url)
-                && robotsPermissionsController.isAllowed(permissionModel, url);
+                && robotsPermissionsService.isAllowed(permissionModel, url);
     }
 
     private boolean belongsToDomain(String domain, String link) {

@@ -3,8 +3,8 @@ package pl.joanna.webcrawler.crawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import pl.joanna.webcrawler.permissions.PermissionController;
+import org.springframework.stereotype.Service;
+import pl.joanna.webcrawler.permissions.PermissionService;
 import pl.joanna.webcrawler.permissions.PermissionModel;
 
 import java.util.Optional;
@@ -14,17 +14,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Controller
-public class CrawlerController {
+@Service
+public class CrawlerService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CrawlerController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CrawlerService.class);
 
-    private PermissionController permissionController;
+    private PermissionService permissionService;
     private WebCrawler webCrawler;
 
     @Autowired
-    public CrawlerController(PermissionController permissionController, WebCrawler webCrawler) {
-        this.permissionController = permissionController;
+    public CrawlerService(PermissionService permissionService, WebCrawler webCrawler) {
+        this.permissionService = permissionService;
         this.webCrawler = webCrawler;
     }
 
@@ -35,7 +35,7 @@ public class CrawlerController {
      * @return crawled sites
      */
     public Set<String> findAllSites(String url) {
-        PermissionModel permissionModel = permissionController.init(url);
+        PermissionModel permissionModel = permissionService.init(url);
         Optional<String> next = Optional.of(url);
         AtomicInteger activeThreads = new AtomicInteger(0);
         int nThreads = Runtime.getRuntime().availableProcessors();

@@ -1,23 +1,23 @@
 package pl.joanna.webcrawler.crawler;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import pl.joanna.webcrawler.permissions.PermissionController;
+import org.springframework.stereotype.Service;
+import pl.joanna.webcrawler.permissions.PermissionService;
 import pl.joanna.webcrawler.permissions.PermissionModel;
 
 import java.util.Optional;
 import java.util.Set;
 
-@Controller
+@Service
 public class WebCrawler {
 
-    private PermissionController permissionController;
+    private PermissionService permissionService;
     private Frontier frontier;
     private SiteLoader siteLoader;
 
     @Autowired
-    public WebCrawler(PermissionController permissionController, Frontier frontier, SiteLoader siteLoader) {
-        this.permissionController = permissionController;
+    public WebCrawler(PermissionService permissionService, Frontier frontier, SiteLoader siteLoader) {
+        this.permissionService = permissionService;
         this.frontier = frontier;
         this.siteLoader = siteLoader;
     }
@@ -38,7 +38,7 @@ public class WebCrawler {
     }
 
     private void processLink(PermissionModel permissionModel, String link) {
-        if (permissionController.isAllowedToVisit(permissionModel, link)) {
+        if (permissionService.isAllowedToVisit(permissionModel, link)) {
             frontier.add(link);
         } else {
             frontier.markAsCrawled(link);

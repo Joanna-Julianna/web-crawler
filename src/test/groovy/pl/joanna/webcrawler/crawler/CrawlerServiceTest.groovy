@@ -5,17 +5,17 @@ import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 @SpringBootTest
-class CrawlerControllerTest extends Specification {
+class CrawlerServiceTest extends Specification {
 
     @Autowired
-    private CrawlerController crawlerController
+    private CrawlerService crawlerService
 
     def "find all sites"() {
         given:
         String url = "http://wiprodigital.com"
 
         when:
-        Set<String> sites = crawlerController.findAllSites(url)
+        Set<String> sites = crawlerService.findAllSites(url)
 
         then:
         !sites.isEmpty()

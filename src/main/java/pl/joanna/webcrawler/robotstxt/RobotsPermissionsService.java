@@ -1,10 +1,10 @@
 package pl.joanna.webcrawler.robotstxt;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import pl.joanna.webcrawler.permissions.PermissionModel;
 
-@Controller
-public class RobotsPermissionsController {
+@Service
+public class RobotsPermissionsService {
 
     /**
      * Check if robots.txt isAllowed pl.joanna.webcrawler.crawler to visit the page.

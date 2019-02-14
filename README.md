@@ -25,13 +25,13 @@ Type:
 How to run
 -------------
 
-CrawlerController is responsible for crawling the page given as argument in method findAllSites
+CrawlerService is responsible for crawling the page given as argument in method findAllSites
 
-You can run crawler through integration test CrawlerControllerTest "execute crawler"
+You can run crawler through integration test CrawlerServiceTest "execute crawler"
 
 Type:
 
-    gradlew test --tests CrawlerControllerTest
+    gradlew test --tests CrawlerServiceTest
 
 
 What would I do if I have got more time
