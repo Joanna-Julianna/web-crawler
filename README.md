@@ -7,7 +7,7 @@ The crawler is limited to one domain and visit all pages within the domain and f
 
 The Frontier contains set of crawled sites. There are sites, we visited and links to external sites.
 
-I execute crawler through executor in many threads. There were one main problem. For some time there was situation, when next site to follow was empty, so I couldn't finish the execution, despite that the queue of unvisited sites was empty. I add counter and continue until last thread finish execution (to be precise: finish looking for links). I also call "sleep", because I think is better wait some time (one second) until other thread finds links to follow, than run crawler all the time unsuccessfully.
+Crawler is executed through executor in many threads. There was one main problem. For some time there was a situation, when the next site to follow was empty, so I couldn't finish the execution, despite that the queue of unvisited sites was empty. I add counter and continue until last thread finish execution (to be precise: finish looking for links). I also call "sleep", because I think is better wait some time (one second) until other thread finds links to follow, than run crawler all the time unsuccessfully.
 
 
 Prerequisites
@@ -34,7 +34,7 @@ Type:
     gradlew test --tests CrawlerControllerTest
 
 
-What could I do if I have more time
+What would I do if I have got more time
 --------------------
 1. Add profile for integration tests
 
@@ -56,6 +56,6 @@ https://wiprodigital.com/who-we-are/#wdteam-vid
               .withFollowToDifferentDomain(true)
               .build();
 
-7. What to do if timeout occurs? I try only once and not retry and mark site as crawled.
+7. Implement retrying algorithm for failed requests
 
 8. Create sitemap, add priority for sites 
