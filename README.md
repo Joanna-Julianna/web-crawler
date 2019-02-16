@@ -13,25 +13,28 @@ Crawler is executed through executor in many threads. There was one main problem
 Prerequisites
 -------------
 - JDK 8
-- Gradle
+- Gradle 5.2.1 (it works for older versions too) 
+Download gradle: https://gradle.org/install/
 
 
 Building with Gradle
 --------------------
 Type:
 
-    gradlew clean build
+    gradle clean build
     
-How to run
+Run using IDE
 -------------
 
-CrawlerService is responsible for crawling the page given as argument in method findAllSites
+Open class CrawlerApplication and run
 
-You can run crawler through integration test CrawlerServiceTest "execute crawler"
+
+Running jar
+-------------
 
 Type:
 
-    gradlew test --tests CrawlerServiceTest
+    java -jar build\libs\pl.joanna.webcrawler.crawler-1.0-SNAPSHOT.jar
 
 
 What would I do if I have got more time

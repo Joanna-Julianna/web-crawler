@@ -6,7 +6,7 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-group 'pl.joanna.pl.joanna.webcrawler.crawler'
+group 'pl.joanna.webcrawler'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = JavaVersion.VERSION_1_8

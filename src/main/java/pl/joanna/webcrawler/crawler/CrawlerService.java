@@ -44,7 +44,7 @@ public class CrawlerService {
         do {
             if (next.isPresent()) {
                 String link = next.get();
-                //LOG.info(link);
+                LOG.info(link);
                 activeThreads.incrementAndGet();
                 executor.execute(() -> {
                             webCrawler.findPageLinks(link, permissionModel);
