@@ -22,11 +22,6 @@ Building with Gradle
 Type:
 
     gradle clean build
-    
-Run using IDE
--------------
-
-Open class CrawlerApplication and run
 
 
 Running jar
@@ -34,7 +29,13 @@ Running jar
 
 Type:
 
-    java -jar build\libs\pl.joanna.webcrawler.crawler-1.0-SNAPSHOT.jar
+    java -jar build/libs/crawler-1.0-SNAPSHOT.jar
+
+
+Run using IDE
+-------------
+
+Open class CrawlerApplication and run
 
 
 What would I do if I have got more time

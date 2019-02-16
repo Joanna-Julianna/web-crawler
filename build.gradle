@@ -24,6 +24,6 @@ dependencies {
             'org.spockframework:spock-core:1.2-groovy-2.5',
             'org.codehaus.groovy:groovy-all:2.5.6',
             'org.springframework.boot:spring-boot-starter-test',
-            'org.spockframework:spock-spring:1.2-groovy-2.4'
+            'org.spockframework:spock-spring:1.2-groovy-2.5'
     )
 }

@@ -1,15 +1,19 @@
 package pl.joanna.webcrawler.crawler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.joanna.webcrawler.permissions.PermissionService;
 import pl.joanna.webcrawler.permissions.PermissionModel;
+import pl.joanna.webcrawler.permissions.PermissionService;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class WebCrawler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WebCrawler.class);
 
     private PermissionService permissionService;
     private Frontier frontier;
@@ -38,10 +42,15 @@ public class WebCrawler {
     }
 
     private void processLink(PermissionModel permissionModel, String link) {
+        boolean added;
         if (permissionService.isAllowedToVisit(permissionModel, link)) {
-            frontier.add(link);
+            added = frontier.add(link);
         } else {
-            frontier.markAsCrawled(link);
+            added = frontier.markAsCrawled(link);
+        }
+
+        if (added) {
+            LOG.info(link);
         }
     }
 
