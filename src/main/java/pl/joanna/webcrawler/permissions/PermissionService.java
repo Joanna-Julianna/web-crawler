@@ -1,22 +1,20 @@
 package pl.joanna.webcrawler.permissions;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import pl.joanna.webcrawler.robotstxt.RobotsPermissionsService;
 import pl.joanna.webcrawler.robotstxt.RobotsTxtParser;
 
 import java.util.Set;
 
-@Service
+@Component
 public class PermissionService {
 
-    private RobotsTxtParser robotsTxtParser;
-    private RobotsPermissionsService robotsPermissionsService;
+    private final RobotsTxtParser robotsTxtParser;
+    private final RobotsPermissionsService robotsPermissionsService;
 
-    @Autowired
-    public PermissionService(RobotsPermissionsService robotsPermissionsService, RobotsTxtParser robotsTxtParser) {
-        this.robotsPermissionsService = robotsPermissionsService;
+    public PermissionService(RobotsTxtParser robotsTxtParser, RobotsPermissionsService robotsPermissionsService) {
         this.robotsTxtParser = robotsTxtParser;
+        this.robotsPermissionsService = robotsPermissionsService;
     }
 
     /**

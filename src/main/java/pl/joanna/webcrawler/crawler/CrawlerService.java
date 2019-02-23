@@ -2,10 +2,9 @@ package pl.joanna.webcrawler.crawler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import pl.joanna.webcrawler.permissions.PermissionService;
+import org.springframework.stereotype.Component;
 import pl.joanna.webcrawler.permissions.PermissionModel;
+import pl.joanna.webcrawler.permissions.PermissionService;
 
 import java.util.Optional;
 import java.util.Set;
@@ -14,15 +13,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Service
+@Component
 public class CrawlerService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CrawlerService.class);
 
-    private PermissionService permissionService;
-    private WebCrawler webCrawler;
+    private final PermissionService permissionService;
+    private final WebCrawler webCrawler;
 
-    @Autowired
     public CrawlerService(PermissionService permissionService, WebCrawler webCrawler) {
         this.permissionService = permissionService;
         this.webCrawler = webCrawler;

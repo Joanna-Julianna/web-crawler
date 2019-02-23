@@ -1,9 +1,9 @@
 package pl.joanna.webcrawler.robotstxt;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import pl.joanna.webcrawler.permissions.PermissionModel;
 
-@Service
+@Component
 public class RobotsPermissionsService {
 
     /**

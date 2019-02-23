@@ -1,6 +1,5 @@
 package pl.joanna.webcrawler;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,9 +10,8 @@ import java.util.Set;
 @SpringBootApplication
 public class CrawlerApplication implements CommandLineRunner {
 
-    private CrawlerService crawlerService;
+    private final CrawlerService crawlerService;
 
-    @Autowired
     public CrawlerApplication(CrawlerService crawlerService) {
         this.crawlerService = crawlerService;
     }

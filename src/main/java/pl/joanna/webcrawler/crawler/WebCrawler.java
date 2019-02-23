@@ -2,24 +2,22 @@ package pl.joanna.webcrawler.crawler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import pl.joanna.webcrawler.permissions.PermissionModel;
 import pl.joanna.webcrawler.permissions.PermissionService;
 
 import java.util.Optional;
 import java.util.Set;
 
-@Service
+@Component
 public class WebCrawler {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebCrawler.class);
 
-    private PermissionService permissionService;
-    private Frontier frontier;
-    private SiteLoader siteLoader;
+    private final PermissionService permissionService;
+    private final Frontier frontier;
+    private final SiteLoader siteLoader;
 
-    @Autowired
     public WebCrawler(PermissionService permissionService, Frontier frontier, SiteLoader siteLoader) {
         this.permissionService = permissionService;
         this.frontier = frontier;

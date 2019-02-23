@@ -5,13 +5,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class SiteLoader {
 
     private static final Logger LOG = LoggerFactory.getLogger(SiteLoader.class);

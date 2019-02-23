@@ -9,7 +9,7 @@ class PermissionServiceTest extends Specification {
 
     private RobotsPermissionsService robotsPermissionsService = Mock()
     private RobotsTxtParser robotsTxtParser = Mock()
-    private PermissionService permissionService
+    private PermissionService permissionService = new PermissionService(robotsTxtParser, robotsPermissionsService)
 
     @Unroll
     def "Check if is allowed to visit page #page"() {
@@ -17,7 +17,6 @@ class PermissionServiceTest extends Specification {
         def domain = "wiprodigital.com"
         PermissionModel permissionModel = new PermissionModel(domain, new HashSet<String>())
         robotsPermissionsService.isAllowed(permissionModel, page) >> allowedToRobots
-        permissionService = new PermissionService(robotsPermissionsService, robotsTxtParser)
 
         when:
         boolean result = permissionService.isAllowedToVisit(permissionModel, page)
