@@ -12,16 +12,14 @@ Crawler is executed through executor in many threads. There was one main problem
 
 Prerequisites
 -------------
-- JDK 8
-- Gradle 5.2.1 (it works for older versions too) 
-Download gradle: https://gradle.org/install/
+- JDK 12
 
 
 Building with Gradle
 --------------------
 Type:
 
-    gradle clean build
+    ./gradlew clean build
 
 
 Running jar
